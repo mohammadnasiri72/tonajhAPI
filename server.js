@@ -3,7 +3,6 @@ const cors = require("cors");
 
 const app = express();
 
-// فعال‌سازی CORS برای همه‌ی دامنه‌ها
 app.use(
   cors({
     origin: "http://localhost:3000",
