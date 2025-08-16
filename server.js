@@ -1,132 +1,122 @@
+
+
+// const express = require("express");
+// const cors = require("cors");
+// const { MongoClient, ObjectId } = require("mongodb");
+// const Joi = require("joi");
+// require("dotenv").config();
+
+// const app = express();
+
+// app.use(cors());
+// app.use(express.json());
+
+
+// const dbConnection = new MongoClient(process.env.MAINDOMAIN);
+// const dbName = process.env.DBNAME;
+
+// const categorySchema = Joi.object({
+//   title: Joi.string().min(2).max(100).required(),
+//   parentId: Joi.number().required(),
+//   img: Joi.string().optional()
+// });
+
+
+// app.get("/api/categorys", async (req, res) => {
+//   try {
+//     await dbConnection.connect();
+//     const db = dbConnection.db(dbName);
+//     const categorys = await db.collection("categorys").find().toArray();
+//     res.json(categorys);
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     res.status(500).send("Internal Server Error");
+//   } finally {
+//     await dbConnection.close(); // اختیاریه، می‌تونی اتصال رو باز نگه داری
+//   }
+// });
+// app.post("/api/categorys", async (req, res) => {
+//   try {
+//     const { error, value } = categorySchema.validate(req.body);
+//     if (error) {
+//       return res.status(400).json({ message: "فرمت داده نامعتبره", details: error.details });
+//     }
+
+//     await dbConnection.connect();
+//     const db = dbConnection.db(dbName);
+//     const result = await db.collection("categorys").insertOne(value);
+//     res.status(201).json(result);
+//   } catch (error) {
+//     console.error("Error adding category:", error);
+//     res.status(500).send("مشکلی در افزودن دیتا پیش اومده");
+//   } finally {
+//     await dbConnection.close();
+//   }
+// });
+// app.delete("/api/categorys/:id", async (req, res) => {
+//   try {
+//     await dbConnection.connect();
+//     const db = dbConnection.db(dbName);
+//     const categoryId = req.params.id;
+
+//     const result = await db.collection("categorys").deleteOne({
+//       _id: new ObjectId(categoryId)
+//     });
+
+//     if (result.deletedCount === 1) {
+//       res.status(200).send("دسته‌بندی با موفقیت حذف شد");
+//     } else {
+//       res.status(404).send("دسته‌بندی پیدا نشد");
+//     }
+//   } catch (error) {
+//     console.error("Error deleting category:", error);
+//     res.status(500).send("خطا در حذف دسته‌بندی");
+//   } finally {
+//     await dbConnection.close();
+//   }
+// });
+// app.put("/api/categorys/:id", async (req, res) => {
+//   try {
+//     await dbConnection.connect();
+//     const db = dbConnection.db(dbName);
+//     const categoryId = req.params.id;
+//     const updatedData = req.body;
+
+//     const result = await db.collection("categorys").updateOne(
+//       { _id: new ObjectId(categoryId) },
+//       { $set: updatedData }
+//     );
+
+//     if (result.modifiedCount === 1) {
+//       res.status(200).send("دسته‌بندی با موفقیت ویرایش شد");
+//     } else {
+//       res.status(404).send("دسته‌بندی پیدا نشد یا تغییری نکرد");
+//     }
+//   } catch (error) {
+//     console.error("Error updating category:", error);
+//     res.status(500).send("خطا در ویرایش دسته‌بندی");
+//   } finally {
+//     await dbConnection.close();
+//   }
+// });
+
+// app.listen(process.env.PORT, () => {
+//   console.log(`Server is running on port ${process.env.PORT}`);
+// });
+
+
+
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+const categoryRoutes = require("./routes/categoryRoutes");
+app.use("/api/categorys", categoryRoutes);
 
-app.get("/api/products", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      title: "لبنیات",
-      img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhCZe0e0hWp5eEvMfEsXrAJnl-AxE4IXDOAQ&s',
-      subMenu: [
-        {
-          id: 11,
-          title: "شیر",
-          img:'',
-          subMenu: [
-            {
-              id: 111,
-              title: "شیر پاستوریزه",
-              img:'',
-            },
-            {
-              id: 112,
-              title: "شیر استریلیزه",
-             img:'',
-            },
-          ],
-        },
-        {
-          id: 12,
-          title: "پنیر",
-          img:'',
-          subMenu: [
-            {
-              id: 121,
-              title: "پنیر سفید",
-              img:'',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "گوشت و پروتئین",
-      img:'',
-      subMenu: [
-        {
-          id: 21,
-          title: "گوشت قرمز",
-          img:'',
-          subMenu: [
-            {
-              id: 211,
-              title: "گوشت گوسفندی",
-              img:'',
-            },
-            {
-              id: 212,
-              title: "گوشت گوساله",
-             img:'',
-            },
-          ],
-        },
-        {
-          id: 22,
-          title: "مرغ",
-          img:'',
-          subMenu: [
-            {
-              id: 221,
-              title: "ران مرغ",
-             img:'',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: "نوشیدنی‌ها",
-      img:'',
-      subMenu: [
-        {
-          id: 31,
-          title: "نوشیدنی‌های گرم",
-          img:'',
-        },
-        {
-          id: 32,
-          title: "نوشیدنی‌های سرد",
-          img:'',
-          subMenu: [
-            {
-              id: 321,
-              title: "آبمیوه",
-              img:'',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: "خشکبار و آجیل",
-      img:'',
-      subMenu: [
-        {
-          id: 41,
-          title: "آجیل",
-         img:'',
-        },
-        {
-          id: 42,
-          title: "میوه خشک",
-          img:'',
-        },
-      ],
-    },
-  ]);
-});
-
-app.listen(4000, () => {
-  console.log("Server is running on port 4000");
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
