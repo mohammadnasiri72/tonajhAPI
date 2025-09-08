@@ -174,11 +174,13 @@ exports.checkMobile = async (req, res) => {
     });
 
     if (user) {
+      const token = signToken(user._id)
       // کاربر وجود دارد - برای لاگین هدایت شود
       return res.status(200).json({
         status: "login",
         message: "با موفقیت وارد شدید",
         user,
+        token,
       });
     } else {
       // کاربر وجود ندارد - برای ثبت‌نام هدایت شود
