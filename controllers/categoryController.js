@@ -138,8 +138,8 @@ exports.updateCategory = async (req, res) => {
     const updateData = {
       title: value.title,
       parentId: value.parentId,
-      description: value.description || existingCategory.description,
-      img: value.img || existingCategory.img,
+      description: value.description ,
+      img: value.img ,
       updatedAt: new Date(),
       isActive: value.isActive,
     };

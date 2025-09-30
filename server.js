@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const categoryRoutes = require("./routes/categoryRoutes");
 const authRoutes = require("./routes/authRoutes");
+const transactionRoutes = require("./routes/transactionRoutes");
+const provinceRoutes = require("./routes/provinceRoutes");
+const citiesRoutes = require("./routes/citiesRoutes");
 
 
 
@@ -14,6 +17,9 @@ app.use(express.json());
 
 app.use("/api/categorys", categoryRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/transaction", transactionRoutes);
+app.use("/api/province", provinceRoutes);
+app.use("/api/cities", citiesRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

@@ -267,8 +267,9 @@ exports.register = async (req, res) => {
 
     res.status(201).json({
       status: "success",
+      message:'ثبت نام شما با موفقیت انجام شد',
       token,
-      data: userData,
+      user: userData,
     });
   } catch (err) {
     res.status(500).json({

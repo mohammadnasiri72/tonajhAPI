@@ -9,7 +9,7 @@ const {
 const { protect } = require("../midleware/auth");
 
 router.get("/", getCategories);
-router.post("/", protect , createCategory);
+router.post("/" , createCategory);
 router.put("/:id", updateCategory);
 router.delete("/:id", deleteCategory);
 
