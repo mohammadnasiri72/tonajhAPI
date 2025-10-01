@@ -1,26 +1,11 @@
 
-const express = require("express");
-const cors = require("cors");
-const categoryRoutes = require("./routes/categoryRoutes");
-const authRoutes = require("./routes/authRoutes");
-const transactionRoutes = require("./routes/transactionRoutes");
-const provinceRoutes = require("./routes/provinceRoutes");
-const citiesRoutes = require("./routes/citiesRoutes");
-
-
-
 require("dotenv").config();
+const app = require("./app");
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-app.use("/api/categorys", categoryRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/transaction", transactionRoutes);
-app.use("/api/province", provinceRoutes);
-app.use("/api/cities", citiesRoutes);
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
